@@ -5,11 +5,390 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Keuangan</title>
+
+  <style>
+  /* Base Style & Background */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #000000, #1a0b2e);
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Header Styling */
+  header {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+    color: #bb86fc;
+    margin: 0;
+  }
+
+  header a {
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border: 1px solid #ff4b2b;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+
+  header a:hover {
+    background: #ff4b2b;
+    color: white;
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #6200ea, transparent);
+    margin: 20px 0;
+    width: 100%;
+  }
+
+  /* Main Container */
+  main {
+    width: 100%;
+    max-width: 900px;
+    padding: 0 20px 40px 20px;
+    box-sizing: border-box;
+  }
+
+  h2 {
+    color: #bb86fc;
+    font-size: 1.2rem;
+    margin-top: 30px;
+    border-left: 4px solid #6200ea;
+    padding-left: 10px;
+  }
+
+  /* Summary Cards */
+  #summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+  }
+
+  #summary p, #summary h3 {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 0;
+    border: 1px solid rgba(187, 134, 252, 0.1);
+    text-align: center;
+  }
+
+  #income { color: #03dac6; } /* Teal/Green for Income */
+  #outcome { color: #cf6679; } /* Red for Outcome */
+  #balance { color: #bb86fc; font-size: 1.4rem; }
+
+  /* Form Styling */
+  #addTransactionForm {
+    background: rgba(30, 30, 30, 0.6);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(187, 134, 252, 0.2);
+  }
+
+  #addTransactionForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #bbb;
+  }
+
+  #addTransactionForm input, 
+  #addTransactionForm select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #121212;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    box-sizing: border-box;
+    outline: none;
+  }
+
+  #addTransactionForm input:focus, 
+  #addTransactionForm select:focus {
+    border-color: #bb86fc;
+    box-shadow: 0 0 8px rgba(187, 134, 252, 0.3);
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(45deg, #6200ea, #9d4edd);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+  }
+
+  button[type="submit"]:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+  }
+
+  /* Transaction List Styling */
+  #transactionList {
+    list-style: none;
+    padding: 0;
+  }
+
+  #transactionList li {
+    background: rgba(255, 255, 255, 0.03);
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #6200ea;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+  }
+
+  #transactionList li:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  /* Status message for adding transaction */
+  #addMessage {
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* Responsive adjustment */
+  @media (max-width: 600px) {
+    header { flex-direction: column; gap: 15px; text-align: center; }
+    #summary { grid-template-columns: 1fr; }
+  }
+</style><style>
+  /* Base Style & Background */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #000000, #1a0b2e);
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Header Styling */
+  header {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+    color: #bb86fc;
+    margin: 0;
+  }
+
+  header a {
+    color: #ff4b2b;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border: 1px solid #ff4b2b;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+
+  header a:hover {
+    background: #ff4b2b;
+    color: white;
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #6200ea, transparent);
+    margin: 20px 0;
+    width: 100%;
+  }
+
+  /* Main Container */
+  main {
+    width: 100%;
+    max-width: 900px;
+    padding: 0 20px 40px 20px;
+    box-sizing: border-box;
+  }
+
+  h2 {
+    color: #bb86fc;
+    font-size: 1.2rem;
+    margin-top: 30px;
+    border-left: 4px solid #6200ea;
+    padding-left: 10px;
+  }
+
+  /* Summary Cards */
+  #summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+  }
+
+  #summary p, #summary h3 {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 0;
+    border: 1px solid rgba(187, 134, 252, 0.1);
+    text-align: center;
+  }
+
+  #income { color: #03dac6; } /* Teal/Green for Income */
+  #outcome { color: #cf6679; } /* Red for Outcome */
+  #balance { color: #bb86fc; font-size: 1.4rem; }
+
+  /* Form Styling */
+  #addTransactionForm {
+    background: rgba(30, 30, 30, 0.6);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(187, 134, 252, 0.2);
+  }
+
+  #addTransactionForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #bbb;
+  }
+
+  #addTransactionForm input, 
+  #addTransactionForm select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #121212;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    box-sizing: border-box;
+    outline: none;
+  }
+
+  #addTransactionForm input:focus, 
+  #addTransactionForm select:focus {
+    border-color: #bb86fc;
+    box-shadow: 0 0 8px rgba(187, 134, 252, 0.3);
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(45deg, #6200ea, #9d4edd);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+  }
+
+  button[type="submit"]:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+  }
+
+  /* Transaction List Styling */
+  #transactionList {
+    list-style: none;
+    padding: 0;
+  }
+
+  #transactionList li {
+    background: rgba(255, 255, 255, 0.03);
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #6200ea;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+  }
+
+  #transactionList li:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  /* Status message for adding transaction */
+  #addMessage {
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* Responsive adjustment */
+  @media (max-width: 600px) {
+    header { flex-direction: column; gap: 15px; text-align: center; }
+    #summary { grid-template-columns: 1fr; }
+  }
+
+  #transactionList button{
+  margin-left:6px;
+  padding:6px 10px;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+#transactionList button:hover{
+  opacity:0.8;
+}
+
+#transactionList button:first-child{
+  background:#03dac6;
+  color:black;
+}
+
+#transactionList button:last-child{
+  background:#1a0b2e;
+  color:white;
+}
+</style>
 </head>
  
 <body>
   <header>
-    <h1>Halo, <span id="username">Pengguna</span>!</h1>
+    <h3>Halo, <span id="username">Pengguna</span>!</h3>
     <a href="/logout/">Logout</a>
     <hr>
   </header>
@@ -118,13 +497,25 @@
             transactionList.innerHTML = '<li>Belum ada transaksi di bulan ini.</li>';
           }
           data.forEach((t) => {
-            const li = document.createElement('li');
-            const nominalFormatted = formatRupiah(parseFloat(t.nominal));
-            const color = t.status === 'income' ? 'green' : 'red';
-            
-            li.innerHTML = `**[${t.status.toUpperCase()}]** ${t.transactionDate}: <span style="color: ${color};">${nominalFormatted}</span> - ${t.description || '-'}`;
-            transactionList.appendChild(li);
-          });
+  const li = document.createElement('li');
+  const nominalFormatted = formatRupiah(parseFloat(t.nominal));
+  const color = t.status === 'income' ? 'green' : 'red';
+
+  li.innerHTML = `
+  <div>
+    [${t.status.toUpperCase()}] ${t.transactionDate}: 
+    <span style="color:${color}">${nominalFormatted}</span>
+    - ${t.description || '-'}
+  </div>
+
+  <div>
+    <button onclick="editTransaction(${t.id})">✏️ Edit</button>
+    <button onclick="deleteTransaction(${t.id})">🗑 Delete</button>
+  </div>
+  `;
+
+  transactionList.appendChild(li);
+});
         } else {
             transactionList.innerHTML = '<li>Gagal memuat transaksi.</li>';
         }
@@ -178,7 +569,93 @@
         }
     })();
  
- 
+ async function deleteTransaction(id) {
+
+  const confirmDelete = confirm("Yakin ingin menghapus transaksi ini?");
+  if (!confirmDelete) return;
+
+  try {
+
+    const response = await fetch(`/api/transactions/${id}`, {
+      method: "DELETE"
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+
+      alert("✅ Transaksi berhasil dihapus");
+
+      fetchTransactions(CURRENT_YEAR, CURRENT_MONTH);
+
+    } else {
+
+      alert(result.message || "Gagal menghapus transaksi");
+
+    }
+
+  } catch (error) {
+
+    console.error(error);
+    alert("❌ Error jaringan");
+
+  }
+}
+
+async function editTransaction(id){
+
+  const nominalInput = prompt("Masukkan nominal baru:");
+
+  if(!nominalInput) return;
+
+  const nominal = parseFloat(nominalInput);
+
+  if(isNaN(nominal)){
+    alert("Nominal harus berupa angka");
+    return;
+  }
+
+  const description = prompt("Masukkan keterangan baru:") || "";
+
+  try{
+
+    const response = await fetch(`/api/transactions/${id}`,{
+
+      method:"PUT",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        nominal,
+        description
+      })
+
+    });
+
+    const result = await response.json();
+
+    if(result.success){
+
+      alert("✅ Transaksi berhasil diupdate");
+
+      fetchTransactions(CURRENT_YEAR, CURRENT_MONTH);
+
+    }else{
+
+      alert(result.message || "Gagal update transaksi");
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+    alert("❌ Error jaringan");
+
+  }
+
+}
   </script>
 </body>
  

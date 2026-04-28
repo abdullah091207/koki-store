@@ -127,6 +127,83 @@ app.get('/api/transactions', authMiddleware, async (c) => {
     }
 });
  
+app.put('/api/transactions/:id', authMiddleware, async (c) => {
+    try {
+        const user = c.get('user');
+        const id = c.req.param('id');
+
+        const { nominal, description, status, transactionDate } = await c.req.json();
+
+        // cek apakah transaksi milik user
+        const existing = await db.query.transactions.findFirst({
+            where: (t, { eq, and }) =>
+                and(
+                    eq(t.id, parseInt(id)),
+                    eq(t.userId, user.id)
+                )
+        });
+
+        if (!existing) {
+            return c.json({ success: false, message: 'Transaksi tidak ditemukan' }, 404);
+        }
+
+        const updated = await db.update(transactions)
+            .set({
+                nominal: nominal ? nominal.toString() : existing.nominal,
+                description: description ?? existing.description,
+                status: status ?? existing.status,
+                transactionDate: transactionDate ?? existing.transactionDate
+            })
+            .where(eq(transactions.id, parseInt(id)))
+            .returning();
+
+        return c.json({
+            success: true,
+            message: 'Transaksi berhasil diupdate',
+            data: updated[0]
+        });
+
+    } catch (error) {
+        console.error(error);
+        return c.json({ success: false, message: 'Gagal update transaksi' }, 500);
+    }
+});
+
+app.delete('/api/transactions/:id', authMiddleware, async (c) => {
+    try {
+
+        const user = c.get('user');
+        const id = c.req.param('id');
+
+        // cek transaksi milik user
+        const existing = await db.query.transactions.findFirst({
+            where: (t, { eq, and }) =>
+                and(
+                    eq(t.id, parseInt(id)),
+                    eq(t.userId, user.id)
+                )
+        });
+
+        if (!existing) {
+            return c.json({
+                success: false,
+                message: 'Transaksi tidak ditemukan'
+            }, 404);
+        }
+
+        await db.delete(transactions)
+            .where(eq(transactions.id, parseInt(id)));
+
+        return c.json({
+            success: true,
+            message: 'Transaksi berhasil dihapus'
+        });
+
+    } catch (error) {
+        console.error(error);
+        return c.json({ success: false, message: 'Gagal menghapus transaksi' }, 500);
+    }
+});
 
  
 // --- MIDDLEWARE & API ME ---

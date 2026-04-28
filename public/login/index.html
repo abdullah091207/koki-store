@@ -5,6 +5,120 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
+
+  <style>
+  /* Reset & Base Styling */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #0f0c29; 
+    background: linear-gradient(135deg, #000000, #240b36); /* Black to Deep Purple */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+  }
+
+  /* Container Card */
+  .container {
+    background-color: rgba(20, 20, 20, 0.9);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(138, 43, 226, 0.2);
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    border: 1px solid rgba(138, 43, 226, 0.2);
+  }
+
+  h1 {
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #bb86fc; /* Electric Purple */
+    letter-spacing: 0.5px;
+  }
+
+  /* Message styling */
+  #message {
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    min-height: 20px;
+    font-weight: 500;
+  }
+
+  /* Form Styling */
+  #loginForm {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    padding: 14px 15px;
+    margin-bottom: 5px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background-color: #121212;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  input:focus {
+    border-color: #bb86fc;
+    box-shadow: 0 0 10px rgba(187, 134, 252, 0.3);
+    background-color: #1a1a1a;
+  }
+
+  /* Button Styling */
+  button {
+    padding: 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #6200ea, #9d4edd);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+    filter: brightness(1.1);
+  }
+
+  button:active {
+    transform: translateY(0);
+  }
+
+  /* Link Styling */
+  p {
+    margin-top: 25px;
+    font-size: 0.9em;
+    color: #888;
+  }
+
+  a {
+    color: #bb86fc;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+
+  a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+</style>
 </head>
  
 <body>

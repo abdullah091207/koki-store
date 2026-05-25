@@ -220,7 +220,7 @@ app.get('/api/me', (c) => {
  
 // index.js (Bagian bawah, sebelum kode server start)
 // ROOT URL dan SERVE STATIC FILES (untuk UI)
-app.use('/*', serveStatic({ root: './public' }));
+// app.use('/*', serveStatic({ root: './public' }));
 
 // --- SERVER START ---
 // Logika Vercel (akan ditambahkan nanti)

@@ -12,6 +12,10 @@ import { serveStatic } from '@hono/node-server/serve-static';
  
 const app = new Hono();
 const SECRET = process.env.JWT_SECRET;
+
+app.get('/', (c) => {
+  return c.text('Koki Store API Running')
+})
  
 // --- API REGISTRASI ---
 app.post('/api/register', async (c) => {

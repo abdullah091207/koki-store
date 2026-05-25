@@ -12,10 +12,6 @@ import { serveStatic } from '@hono/node-server/serve-static';
  
 const app = new Hono();
 const SECRET = process.env.JWT_SECRET;
-
-app.get('/', (c) => {
-  return c.text('Koki Store API Running')
-})
  
 // --- API REGISTRASI ---
 app.post('/api/register', async (c) => {
@@ -224,7 +220,7 @@ app.get('/api/me', (c) => {
  
 // index.js (Bagian bawah, sebelum kode server start)
 // ROOT URL dan SERVE STATIC FILES (untuk UI)
-// app.use('/*', serveStatic({ root: './public' }));
+app.use('/*', serveStatic({ root: './public' }));
 
 // --- SERVER START ---
 // Logika Vercel (akan ditambahkan nanti)

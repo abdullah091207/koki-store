@@ -9,6 +9,7 @@ import { db } from './db/index.js';
 import { users, transactions } from './db/schema.js';
 import { eq, desc, sql } from 'drizzle-orm';
 import { serveStatic } from '@hono/node-server/serve-static';
+import { handle } from '@hono/vercel';
  
 const app = new Hono();
 const SECRET = process.env.JWT_SECRET;
@@ -230,4 +231,5 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-module.exports = app;
+// GUNAKAN INI SEBAGAI GANTINYA
+export default handle(app);

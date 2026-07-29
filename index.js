@@ -220,16 +220,14 @@ app.get('/api/me', (c) => {
  
 // index.js (Bagian bawah, sebelum kode server start)
 // ROOT URL dan SERVE STATIC FILES (untuk UI)
-app.use('/*', serveStatic({ root: './public' }));
+// app.use('/*', serveStatic({ root: './public' }));
 
 // --- SERVER START ---
 // Logika Vercel (akan ditambahkan nanti)
-if (process.env.VERCEL) {
-    globalThis.app = app;
-} else {
-    const port = 3001;
-    console.log(`🚀 Server is running on http://localhost:${port}`);
-    serve({ fetch: app.fetch, port });
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(3001, () => {
+    console.log('🚀 Server is running on http://localhost:3001');
+  });
 }
 
-export default app;
+module.exports = app;

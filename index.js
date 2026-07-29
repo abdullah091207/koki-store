@@ -218,17 +218,22 @@ app.get('/api/me', (c) => {
     }
 });
  
-// index.js (Bagian bawah, sebelum kode server start)
-// ROOT URL dan SERVE STATIC FILES (untuk UI)
-// app.use('/*', serveStatic({ root: './public' }));
+// --- BAGIAN BAWAH index.js ---
 
-// --- SERVER START ---
-// Logika Vercel (akan ditambahkan nanti)
+// Kita hanya menjalankan serveStatic dan server lokal JIKA di lokal (bukan Vercel)
+// Di Vercel, file public otomatis dilayani berkat file vercel.json
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(3001, () => {
-    console.log('🚀 Server is running on http://localhost:3001');
-  });
+    // Serve static files untuk UI HANYA SAAT LOKAL
+    app.use('/*', serveStatic({ root: './public' }));
+    
+    // Server Hono menggunakan 'serve' dari @hono/node-server, BUKAN app.listen()
+    serve({
+        fetch: app.fetch,
+        port: 3001
+    }, (info) => {
+        console.log(`🚀 Server Hono is running on http://localhost:${info.port}`);
+    });
 }
 
-// GUNAKAN INI SEBAGAI GANTINYA
+// Export khusus untuk Vercel Serverless Function menggunakan adapter
 export default app;

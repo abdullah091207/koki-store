@@ -224,15 +224,12 @@ app.use('/*', serveStatic({ root: './public' }));
 
 // --- SERVER START ---
 // Logika Vercel (akan ditambahkan nanti)
-// if (process.env.VERCEL) {
-//     globalThis.app = app;
-// } else {
-//     const port = 3001;
-//     console.log(`🚀 Server is running on http://localhost:${port}`);
-//     serve({ fetch: app.fetch, port });
-// }
-const port = 3001;
-console.log(`🚀 Server is running on http://localhost:${port}`);
-serve({ fetch: app.fetch, port });
+if (process.env.VERCEL) {
+    globalThis.app = app;
+} else {
+    const port = 3001;
+    console.log(`🚀 Server is running on http://localhost:${port}`);
+    serve({ fetch: app.fetch, port });
+}
 
-export default {app, authMiddleware};
+export default app;

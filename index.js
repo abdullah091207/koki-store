@@ -14,18 +14,19 @@ const app = new Hono();
 const SECRET = process.env.JWT_SECRET;
  
 // --- API REGISTRASI ---
-app.post('/api/register', async (c) => {
-    try {
+    app.post("/api/register", async (c) => {
+      try {
         const { username, password } = await c.req.json();
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await db.insert(users)
-            .values({ username, password: hashedPassword })
-            .returning({ id: users.id, username: users.username });
-        return c.json({ success: true, data: newUser[0] }, 201);
-    } catch (error) {
-        return c.json({ success: false, message: 'Registrasi gagal' }, 400);
-    }
-});
+        const newUser = await db
+          .insert(users)
+          .values({ username, password: hashedPassword })
+          .returning({ id: users.id, username: users.username });
+        return c.json({ success: true, data: newUser[0] }, 200);
+      } catch (error) {
+        return c.json({ success: false, message : "register gagal" }, 400);
+      }
+    });
  
 // --- API LOGIN ---
 app.post('/api/login', async (c) => {
@@ -226,4 +227,4 @@ const port = 8000;
 console.log(`server is running on http://localhost:${port}`);
 serve({ fetch: app.fetch, port });
 
-export default { app, authMiddleware };
+export default app;
